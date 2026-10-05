@@ -1,5 +1,4 @@
 ﻿using ConsoleApp1;
-using System.Runtime.ConstrainedExecution;
 
 class Program
 {
@@ -9,6 +8,9 @@ class Program
 
         myCar.honk();
 
-        Console.WriteLine(myCar.brand + " " + myCar.modelName);
+        Console.WriteLine(myCar.Brand + " " + myCar.modelName);
+
+        myCar.vehicleGoesBrmBrm();
+
     }
 }

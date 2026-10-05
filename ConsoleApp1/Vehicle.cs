@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ConsoleApp1
+﻿namespace ConsoleApp1
 {
-    class Vehicle
+    class Vehicle : IVehicle
     {
-        public string brand = "Ford";
+        private string brand = "Ford";
+        
+        
+        public string Brand
+        {
+            get { return brand; }
+            set { brand = value; }
+        }
+
+        public void vehicleGoesBrmBrm()
+        {
+            Console.WriteLine("The vehicle goes Brm Brm.");
+        }
+
         public void honk()
         {
             Console.WriteLine("Tuut, tuut!");
