@@ -2,18 +2,22 @@
 {
     class Vehicle : IVehicle
     {
-        private string brand = "Ford";
+        private string vechileType;
         
         
-        public string Brand
+        public string VechileType
         {
-            get { return brand; }
-            set { brand = value; }
+            get {
+                Console.WriteLine("Enter vechile type: ");
+                vechileType = Console.ReadLine();
+                return vechileType; 
+            }
+            set { vechileType = value; }
         }
 
         public void vehicleGoesBrmBrm()
         {
-            Console.WriteLine("The vehicle goes Brm Brm.");
+            Console.WriteLine("The " + VechileType + " goes Brm Brm.");
         }
 
         public void honk()

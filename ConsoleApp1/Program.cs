@@ -6,11 +6,11 @@ class Program
     {
         Car myCar = new Car();
 
-        myCar.honk();
-
-        Console.WriteLine(myCar.Brand + " " + myCar.modelName);
-
         myCar.vehicleGoesBrmBrm();
+
+        myCar.fastAndFurious();
+        
+        myCar.honk();
 
     }
 }
