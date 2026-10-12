@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using WebApplication3.Exceptions;
 using WebApplication3.Models;
 using WebApplication3.Repositories;
 
@@ -17,14 +18,14 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
     }
 
-    public async Task<bool> RegisterAsync(RegisterRequest request)
+    public async Task RegisterAsync(RegisterRequest request)
     {
         var username = request.Username.Trim().ToLowerInvariant();
         var email = request.Email.Trim().ToLowerInvariant();
 
         if (await _users.ExistsAsync(username, email))
         {
-            return false;
+            throw new ConflictException("Username or email is already taken.");
         }
 
         var user = new User
@@ -38,21 +39,20 @@ public class AuthService : IAuthService
         user.PasswordHash = _hasher.HashPassword(user, request.Password);
 
         await _users.AddAsync(user);
-        return true;
     }
 
-    public async Task<string?> LoginAsync(LoginRequest request)
+    public async Task<string> LoginAsync(LoginRequest request)
     {
         var user = await _users.GetByUsernameAsync(request.Username.Trim().ToLowerInvariant());
         if (user == null)
         {
-            return null;
+            throw new UnauthorizedException("Invalid username or password.");
         }
 
         var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (result == PasswordVerificationResult.Failed)
         {
-            return null;
+            throw new UnauthorizedException("Invalid username or password.");
         }
 
         if (result == PasswordVerificationResult.SuccessRehashNeeded)

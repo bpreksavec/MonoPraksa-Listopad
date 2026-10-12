@@ -5,8 +5,17 @@ namespace WebApplication3.Services;
 public interface IWorkoutService
 {
     Task<List<Workout>> GetAllAsync();
-    Task<Workout?> GetByIdAsync(Guid id);
-    Task<Workout> AddAsync(Workout workout);
-    Task<bool> UpdateAsync(Guid id, Workout workout);
-    Task<bool> DeleteAsync(Guid id);
+
+    /// <exception cref="Exceptions.NotFoundException">Workout does not exist.</exception>
+    Task<Workout> GetByIdAsync(Guid id);
+
+    /// <exception cref="Exceptions.ValidationFailedException">Business rules failed.</exception>
+    Task<Workout> AddAsync(WorkoutRequest request);
+
+    /// <exception cref="Exceptions.NotFoundException">Workout does not exist.</exception>
+    /// <exception cref="Exceptions.ValidationFailedException">Business rules failed.</exception>
+    Task UpdateAsync(Guid id, WorkoutRequest request);
+
+    /// <exception cref="Exceptions.NotFoundException">Workout does not exist.</exception>
+    Task DeleteAsync(Guid id);
 }

@@ -3,10 +3,19 @@
 namespace WebApplication3.Models;
 
 public record RegisterRequest(
-    [Required, MinLength(3), MaxLength(50)] string Username,
-    [Required, EmailAddress] string Email,
-    [Required, MinLength(8)] string Password);
+    [Required, StringLength(50, MinimumLength = 3)]
+    [RegularExpression(@"^[a-zA-Z0-9_.-]+$",
+        ErrorMessage = "Username may only contain letters, digits, '_', '.' and '-'.")]
+    string Username,
+
+    [Required, EmailAddress, MaxLength(256)]
+    string Email,
+
+    [Required, StringLength(100, MinimumLength = 8)]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
+        ErrorMessage = "Password must contain a lowercase letter, an uppercase letter and a digit.")]
+    string Password);
 
 public record LoginRequest(
-    [Required] string Username,
-    [Required] string Password);
+    [Required, MaxLength(50)] string Username,
+    [Required, MaxLength(100)] string Password);
