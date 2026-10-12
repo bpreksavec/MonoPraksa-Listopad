@@ -61,7 +61,7 @@ public class WorkoutRepository : IWorkoutRepository
             .FirstOrDefaultAsync(w => w.Id == id);
 
         if (workout == null)
-        {   
+        {
             return false;
         }
 
