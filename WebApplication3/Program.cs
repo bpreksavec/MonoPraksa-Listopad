@@ -11,8 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-builder.Services.AddScoped<WorkoutRepository>();
-builder.Services.AddScoped<WorkoutService>();
+builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 
 builder.Services.AddControllers();
 
