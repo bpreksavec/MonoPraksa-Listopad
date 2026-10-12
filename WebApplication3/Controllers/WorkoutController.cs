@@ -26,7 +26,6 @@ public class WorkoutController : ControllerBase
         return Ok(await _service.GetAllAsync());
     }
 
-    // :guid constraint → a non-GUID id returns 404 instead of reaching the action
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

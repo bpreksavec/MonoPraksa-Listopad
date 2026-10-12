@@ -3,19 +3,18 @@ using WebApplication3.Models;
 
 namespace WebApplication3.Data;
 
-public partial class AppDbContext : DbContext
+public class AppDbContext : DbContext
 {
-    public AppDbContext(
-        DbContextOptions<AppDbContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
 
-    public virtual DbSet<Athlete> Athletes { get; set; }
+    public DbSet<Athlete> Athletes { get; set; }
 
-    public virtual DbSet<Workout> Workouts { get; set; }
+    public DbSet<Workout> Workouts { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -116,9 +115,5 @@ public partial class AppDbContext : DbContext
             entity.HasIndex(e => e.Username).IsUnique();
             entity.HasIndex(e => e.Email).IsUnique();
         });
-
-        OnModelCreatingPartial(modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

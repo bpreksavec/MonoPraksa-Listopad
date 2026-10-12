@@ -10,7 +10,6 @@ public class WorkoutValidator
         "Running", "Cycling", "Swimming", "Walking", "Hiking", "Rowing", "Strength", "Other"
     };
 
-    // Max plausible speed in km/h per sport, to catch typos like 100 km in 10 min
     private static readonly Dictionary<string, double> MaxSpeedKmh = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Running"] = 30,

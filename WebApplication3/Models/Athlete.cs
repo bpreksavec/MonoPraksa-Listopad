@@ -1,6 +1,6 @@
 ﻿namespace WebApplication3.Models;
 
-public partial class Athlete
+public class Athlete
 {
     public Guid Id { get; set; }
 
