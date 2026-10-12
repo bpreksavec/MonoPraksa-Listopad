@@ -18,10 +18,15 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
     }
 
+    private const string InvalidCredentialsMessage = "Invalid username or password.";
+
+    // Usernames and emails are stored lowercase, so every lookup must normalize the same way
+    private static string Normalize(string value) => value.Trim().ToLowerInvariant();
+
     public async Task RegisterAsync(RegisterRequest request)
     {
-        var username = request.Username.Trim().ToLowerInvariant();
-        var email = request.Email.Trim().ToLowerInvariant();
+        var username = Normalize(request.Username);
+        var email = Normalize(request.Email);
 
         if (await _users.ExistsAsync(username, email))
         {
@@ -43,16 +48,16 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginRequest request)
     {
-        var user = await _users.GetByUsernameAsync(request.Username.Trim().ToLowerInvariant());
+        var user = await _users.GetByUsernameAsync(Normalize(request.Username));
         if (user == null)
         {
-            throw new UnauthorizedException("Invalid username or password.");
+            throw new UnauthorizedException(InvalidCredentialsMessage);
         }
 
         var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (result == PasswordVerificationResult.Failed)
         {
-            throw new UnauthorizedException("Invalid username or password.");
+            throw new UnauthorizedException(InvalidCredentialsMessage);
         }
 
         if (result == PasswordVerificationResult.SuccessRehashNeeded)
