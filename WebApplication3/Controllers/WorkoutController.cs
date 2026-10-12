@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Models;
 using WebApplication3.Services;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace WebApplication3.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
+
 public class WorkoutController : ControllerBase
 {
     private readonly IWorkoutService _service;
@@ -58,6 +62,7 @@ public class WorkoutController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Delete(Guid id)
     {
         var deleted = await _service.DeleteAsync(id);

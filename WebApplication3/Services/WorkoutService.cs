@@ -5,8 +5,9 @@ namespace WebApplication3.Services;
 
 public class WorkoutService : IWorkoutService
 {
-private readonly IWorkoutRepository _repository;
-public WorkoutService(IWorkoutRepository repository)
+    private readonly IWorkoutRepository _repository;
+
+    public WorkoutService(IWorkoutRepository repository)
     {
         _repository = repository;
     }
