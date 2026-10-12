@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebApplication3.Models;
 
 namespace WebApplication3.Data;
 
-public partial class AppDbContext : DbContext
+public partial class AppDbContext : 
+    IdentityDbContext<IdentityUser>
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public AppDbContext(
+        DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
@@ -16,6 +20,8 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Athlete>(entity =>
         {
             entity.HasKey(e => e.Id)
@@ -74,10 +80,6 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("sport");
 
-            entity.HasOne(d => d.Athlete)
-                .WithMany(p => p.Workouts)
-                .HasForeignKey(d => d.AthleteId)
-                .HasConstraintName("fk_workout_athlete");
         });
 
         OnModelCreatingPartial(modelBuilder);
