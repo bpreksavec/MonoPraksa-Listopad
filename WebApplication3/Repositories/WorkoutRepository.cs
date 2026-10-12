@@ -4,7 +4,7 @@ using WebApplication3.Models;
 
 namespace WebApplication3.Repositories;
 
-public class WorkoutRepository
+public class WorkoutRepository : IWorkoutRepository
 {
     private readonly AppDbContext _context;
 
@@ -13,19 +13,19 @@ public class WorkoutRepository
         _context = context;
     }
 
-    public async Task<List<Workout>> GetAll()
+    public async Task<List<Workout>> GetAllAsync()
     {
         return await _context.Workouts
             .ToListAsync();
     }
 
-    public async Task<Workout?> GetById(Guid id)
+    public async Task<Workout?> GetByIdAsync(Guid id)
     {
         return await _context.Workouts
             .FirstOrDefaultAsync(w => w.Id == id);
     }
 
-    public async Task<Workout> Create(Workout workout)
+    public async Task<Workout> CreateAsync(Workout workout)
     {
         _context.Workouts.Add(workout);
         await _context.SaveChangesAsync();
@@ -34,7 +34,7 @@ public class WorkoutRepository
             .FirstAsync(w => w.Id == workout.Id);
     }
 
-    public async Task<bool> Update(Guid id, Workout workout)
+    public async Task<bool> UpdateAsync(Guid id, Workout workout)
     {
         var existingWorkout = await _context.Workouts
             .FirstOrDefaultAsync(w => w.Id == id);
@@ -55,7 +55,7 @@ public class WorkoutRepository
         return true;
     }
 
-    public async Task<bool> Delete(Guid id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
         var workout = await _context.Workouts
             .FirstOrDefaultAsync(w => w.Id == id);
