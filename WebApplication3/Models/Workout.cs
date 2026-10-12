@@ -13,6 +13,4 @@ public partial class Workout
     public int? AvgHeartrate { get; set; }
 
     public Guid? AthleteId { get; set; }
-
-    public virtual Athlete? Athlete { get; set; }
 }

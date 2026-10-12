@@ -15,7 +15,8 @@ public class WorkoutRepository
 
     public async Task<List<Workout>> GetAll()
     {
-        return await _context.Workouts.ToListAsync();
+        return await _context.Workouts
+            .ToListAsync();
     }
 
     public async Task<Workout?> GetById(Guid id)
@@ -27,10 +28,10 @@ public class WorkoutRepository
     public async Task<Workout> Create(Workout workout)
     {
         _context.Workouts.Add(workout);
-
         await _context.SaveChangesAsync();
 
-        return workout;
+        return await _context.Workouts
+            .FirstAsync(w => w.Id == workout.Id);
     }
 
     public async Task<bool> Update(Guid id, Workout workout)
@@ -60,7 +61,7 @@ public class WorkoutRepository
             .FirstOrDefaultAsync(w => w.Id == id);
 
         if (workout == null)
-        {
+        {   
             return false;
         }
 

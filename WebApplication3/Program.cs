@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Repositories;
@@ -15,8 +16,21 @@ builder.Services.AddScoped<WorkoutService>();
 
 builder.Services.AddControllers();
 
+builder.Services
+    .AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
+
+app.MapIdentityApi<IdentityUser>();
 
 app.Run();
