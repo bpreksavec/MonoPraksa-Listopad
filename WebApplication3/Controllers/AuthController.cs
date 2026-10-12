@@ -6,7 +6,7 @@ namespace WebApplication3.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-
+[Produces("application/json")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -17,28 +17,22 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var created = await _authService.RegisterAsync(request);
-
-        if (!created)
-        {
-            return Conflict("Username or email is already taken.");
-        }
-
-        return Ok();
+        await _authService.RegisterAsync(request);
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login(LoginRequest request)
     {
         var token = await _authService.LoginAsync(request);
-
-        if (token == null)
-        {
-            return Unauthorized();
-        }
-
         return Ok(new { token });
     }
 }
