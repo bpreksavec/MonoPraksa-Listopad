@@ -1,0 +1,21 @@
+.page{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main{
+  flex:1;
+}
+
+.description{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 18px;
+  text-align: left;
+}
+
+
+.footer{
+  text-align: center;
+  font-size: 10px;
+}
