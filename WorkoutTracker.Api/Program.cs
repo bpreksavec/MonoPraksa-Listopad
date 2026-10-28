@@ -3,29 +3,35 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WorkoutTracker.Api.Middleware;
+using WorkoutTracker.DAL;
 using WorkoutTracker.DAL.Interfaces;
-using WorkoutTracker.Data;
-using WorkoutTracker.Middleware;
-using WorkoutTracker.Models;
-using WorkoutTracker.Repositories;
+using WorkoutTracker.DAL.Models;
+using WorkoutTracker.DAL.Repositories;
 using WorkoutTracker.Service.Interfaces;
 using WorkoutTracker.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .UseSnakeCaseNamingConvention());
 
 builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<WorkoutValidator>();
 
+builder.Services.AddScoped<ISportRepository, SportRepository>();
+builder.Services.AddScoped<ISportService, SportService>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+
+builder.Services.AddScoped<IBodyMeasurementRepository, BodyMeasurementRepository>();
+builder.Services.AddScoped<IBodyMeasurementService, BodyMeasurementService>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails(options =>
@@ -56,7 +62,7 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
             RoleClaimType = "role",
-            NameClaimType = "username"
+            NameClaimType = "email"
         };
     });
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using WorkoutTracker.Exceptions;
 
-namespace WorkoutTracker.Middleware;
+namespace WorkoutTracker.Api.Middleware;
 public sealed class GlobalExceptionHandler : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionHandler> _logger;

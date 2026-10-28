@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using WorkoutTracker.DAL.Interfaces;
+using WorkoutTracker.DAL.Models;
 using WorkoutTracker.Exceptions;
-using WorkoutTracker.Models;
+using WorkoutTracker.Service.DTOs.Auth;
 using WorkoutTracker.Service.Interfaces;
 
 namespace WorkoutTracker.Service.Services;
@@ -21,22 +22,28 @@ public class AuthService : IAuthService
 
     public async Task RegisterAsync(RegisterRequest request)
     {
-        var username = request.Username.Trim().ToLowerInvariant();
         var email = request.Email.Trim().ToLowerInvariant();
 
-        if (await _users.ExistsAsync(username, email))
+        if (await _users.ExistsAsync(email))
         {
-            throw new ConflictException("Username or email is already taken.");
+            throw new ConflictException("Email is already taken.");
         }
+
+        var userRole = await _users.GetRoleByNameAsync(Role.User)
+            ?? throw new InvalidOperationException($"Role '{Role.User}' is missing from the database.");
 
         var user = new User
         {
             Id = Guid.NewGuid(),
-            Username = username,
+            FirstName = request.FirstName.Trim(),
+            LastName = request.LastName.Trim(),
             Email = email,
-            Role = Role.User
+            DateOfBirth = request.DateOfBirth,
+            Gender = request.Gender,
+            CreatedAt = DateTime.UtcNow
         };
 
+        user.UserRoles.Add(new UserRole { UserId = user.Id, RoleId = userRole.Id });
         user.PasswordHash = _hasher.HashPassword(user, request.Password);
 
         await _users.AddAsync(user);
@@ -44,25 +51,23 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginRequest request)
     {
-        var user = await _users.GetByUsernameAsync(request.Username.Trim().ToLowerInvariant());
+        var user = await _users.GetByEmailAsync(request.Email.Trim().ToLowerInvariant());
         if (user == null)
         {
-            throw new UnauthorizedException("Invalid username or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
 
         var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
         if (result == PasswordVerificationResult.Failed)
         {
-            throw new UnauthorizedException("Invalid username or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
 
         if (result == PasswordVerificationResult.SuccessRehashNeeded)
         {
             user.PasswordHash = _hasher.HashPassword(user, request.Password);
+            await _users.UpdateAsync(user);
         }
-
-        user.LastLoginAt = DateTime.UtcNow;
-        await _users.UpdateAsync(user);
 
         return _tokenService.CreateToken(user);
     }

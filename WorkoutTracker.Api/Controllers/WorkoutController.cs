@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WorkoutTracker.Models;
+using WorkoutTracker.Api.Extensions;
+using WorkoutTracker.Service.DTOs.Workouts;
 using WorkoutTracker.Service.Interfaces;
 
-namespace WorkoutTracker.Controllers;
+namespace WorkoutTracker.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -19,28 +20,29 @@ public class WorkoutController : ControllerBase
         _service = service;
     }
 
+    // Users get their own workouts, admins get everyone's
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<Workout>>> GetAll()
+    public async Task<ActionResult<List<WorkoutResponse>>> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        return Ok(await _service.GetAllAsync(User.ToCurrentUser()));
     }
 
     // :guid constraint → a non-GUID id returns 404 instead of reaching the action
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Workout>> GetById(Guid id)
+    public async Task<ActionResult<WorkoutResponse>> GetById(Guid id)
     {
-        return Ok(await _service.GetByIdAsync(id));
+        return Ok(await _service.GetByIdAsync(id, User.ToCurrentUser()));
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Workout>> Create(WorkoutRequest request)
+    public async Task<ActionResult<WorkoutResponse>> Create(WorkoutRequest request)
     {
-        var created = await _service.AddAsync(request);
+        var created = await _service.AddAsync(User.ToCurrentUser(), request);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
@@ -50,18 +52,16 @@ public class WorkoutController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, WorkoutRequest request)
     {
-        await _service.UpdateAsync(id, request);
+        await _service.UpdateAsync(id, User.ToCurrentUser(), request);
         return NoContent();
     }
 
+    // Owners can delete their own workouts, admins can delete any
     [HttpDelete("{id:guid}")]
-    [Authorize(Roles = Role.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await _service.DeleteAsync(id);
+        await _service.DeleteAsync(id, User.ToCurrentUser());
         return NoContent();
-    }
-}
+    }}

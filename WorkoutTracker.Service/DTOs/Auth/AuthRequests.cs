@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+using WorkoutTracker.Common.Enums;
 
-namespace WorkoutTracker.Models;
+namespace WorkoutTracker.Service.DTOs.Auth;
 
 public record RegisterRequest(
-    [Required, StringLength(50, MinimumLength = 3)]
-    [RegularExpression(@"^[a-zA-Z0-9_.-]+$",
-        ErrorMessage = "Username may only contain letters, digits, '_', '.' and '-'.")]
-    string Username,
+    [Required, StringLength(50, MinimumLength = 1)]
+    string FirstName,
+
+    [Required, StringLength(50, MinimumLength = 1)]
+    string LastName,
 
     [Required, EmailAddress, MaxLength(256)]
     string Email,
@@ -14,8 +16,12 @@ public record RegisterRequest(
     [Required, StringLength(100, MinimumLength = 8)]
     [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
         ErrorMessage = "Password must contain a lowercase letter, an uppercase letter and a digit.")]
-    string Password);
+    string Password,
+
+    DateOnly? DateOfBirth,
+
+    Gender? Gender);
 
 public record LoginRequest(
-    [Required, MaxLength(50)] string Username,
+    [Required, EmailAddress, MaxLength(256)] string Email,
     [Required, MaxLength(100)] string Password);
