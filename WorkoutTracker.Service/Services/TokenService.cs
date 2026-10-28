@@ -1,10 +1,12 @@
-﻿using System.Security.Claims;
-using System.Text;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 using WorkoutTracker.Models;
+using WorkoutTracker.Service.Interfaces;
 
-namespace WorkoutTracker.Services;
+namespace WorkoutTracker.Service.Services;
 
 public class TokenService : ITokenService
 {
@@ -32,7 +34,7 @@ public class TokenService : ITokenService
             Issuer = _config["Jwt:Issuer"],
             Audience = _config["Jwt:Audience"],
             Expires = DateTime.UtcNow.AddMinutes(_config.GetValue<int>("Jwt:ExpiresMinutes")),
-            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(key, SecurityAlgorithms.HmacSha256)
         };
 
         return new JsonWebTokenHandler().CreateToken(descriptor);

@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WorkoutTracker.DAL.Interfaces;
 using WorkoutTracker.Data;
 using WorkoutTracker.Middleware;
 using WorkoutTracker.Models;
 using WorkoutTracker.Repositories;
-using WorkoutTracker.Services;
+using WorkoutTracker.Service.Interfaces;
+using WorkoutTracker.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

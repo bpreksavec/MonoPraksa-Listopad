@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../WorkoutTracker.Common/WorkoutTracker.Common.csproj" Id="c7e94517-ebfd-410b-9e19-1773f45b89dc" />
+  <Project Path="../WorkoutTracker.DAL/WorkoutTracker.DAL.csproj" Id="5b114776-1848-441e-8e75-de4f05bd771e" />
+  <Project Path="../WorkoutTracker.Service/WorkoutTracker.Service.csproj" Id="484f739f-811f-496f-aa2f-f93559353404" />
+  <Project Path="WorkoutTracker.Api.csproj" />
+</Solution>

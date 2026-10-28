@@ -10,16 +10,21 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Migrations\" />
+	  <ProjectReference Include="..\WorkoutTracker.Common\WorkoutTracker.Common.csproj" />
+	  <ProjectReference Include="..\WorkoutTracker.DAL\WorkoutTracker.DAL.csproj" />
+	  <ProjectReference Include="..\WorkoutTracker.Service\WorkoutTracker.Service.csproj" />
 	</ItemGroup>
 
 </Project>

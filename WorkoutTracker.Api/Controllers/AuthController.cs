@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WorkoutTracker.Models;
-using WorkoutTracker.Services;
+using WorkoutTracker.Service.Interfaces;
 
 namespace WorkoutTracker.Controllers;
 

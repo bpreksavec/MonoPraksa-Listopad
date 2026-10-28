@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutTracker.Models;
-using WorkoutTracker.Services;
+using WorkoutTracker.Service.Interfaces;
 
 namespace WorkoutTracker.Controllers;
 
@@ -55,7 +55,7 @@ public class WorkoutController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Role.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

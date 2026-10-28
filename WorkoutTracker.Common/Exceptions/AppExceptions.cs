@@ -1,4 +1,6 @@
-﻿namespace WorkoutTracker.Exceptions;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace WorkoutTracker.Exceptions;
 public abstract class AppException : Exception
 {
     public int StatusCode { get; }

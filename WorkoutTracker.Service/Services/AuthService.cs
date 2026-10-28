@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using WorkoutTracker.DAL.Interfaces;
 using WorkoutTracker.Exceptions;
 using WorkoutTracker.Models;
-using WorkoutTracker.Repositories;
+using WorkoutTracker.Service.Interfaces;
 
-namespace WorkoutTracker.Services;
+namespace WorkoutTracker.Service.Services;
 
 public class AuthService : IAuthService
 {
@@ -33,7 +34,7 @@ public class AuthService : IAuthService
             Id = Guid.NewGuid(),
             Username = username,
             Email = email,
-            Role = Roles.User
+            Role = Role.User
         };
 
         user.PasswordHash = _hasher.HashPassword(user, request.Password);
