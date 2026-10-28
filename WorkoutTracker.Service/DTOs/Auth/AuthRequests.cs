@@ -5,12 +5,15 @@ namespace WorkoutTracker.Service.DTOs.Auth;
 
 public record RegisterRequest(
     [Required, StringLength(50, MinimumLength = 1)]
+    [RegularExpression(ValidationPatterns.LettersOnly, ErrorMessage = ValidationPatterns.LettersOnlyMessage)]
     string FirstName,
 
     [Required, StringLength(50, MinimumLength = 1)]
+    [RegularExpression(ValidationPatterns.LettersOnly, ErrorMessage = ValidationPatterns.LettersOnlyMessage)]
     string LastName,
 
     [Required, EmailAddress, MaxLength(256)]
+    [RegularExpression(ValidationPatterns.Email, ErrorMessage = ValidationPatterns.EmailMessage)]
     string Email,
 
     [Required, StringLength(100, MinimumLength = 8)]

@@ -25,10 +25,7 @@ public class ProfileService : IProfileService
 
     public async Task<ProfileResponse> UpdateAsync(Guid userId, ProfileRequest request)
     {
-        if (request.DateOfBirth > DateOnly.FromDateTime(DateTime.UtcNow))
-        {
-            throw new ValidationFailedException(nameof(request.DateOfBirth), "Date of birth cannot be in the future.");
-        }
+        DateOfBirthValidator.Validate(request.DateOfBirth, nameof(request.DateOfBirth));
 
         var user = new User
         {
@@ -50,5 +47,26 @@ public class ProfileService : IProfileService
         }
 
         return await GetAsync(userId);
+    }
+
+    public async Task<List<ProfileResponse>> GetAllAsync()
+    {
+        var users = await _users.GetAllAsync();
+        return users.Select(ProfileResponse.FromEntity).ToList();
+    }
+
+    public async Task DeleteAsync(Guid userId, Guid currentUserId)
+    {
+        // Stops an admin from locking themselves out by deleting their own account
+        if (userId == currentUserId)
+        {
+            throw new ForbiddenException("You cannot delete your own account.");
+        }
+
+        var deleted = await _users.DeleteAsync(userId);
+        if (!deleted)
+        {
+            throw new NotFoundException(nameof(User), userId);
+        }
     }
 }

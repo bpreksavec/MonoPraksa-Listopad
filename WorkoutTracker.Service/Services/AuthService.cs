@@ -22,6 +22,8 @@ public class AuthService : IAuthService
 
     public async Task RegisterAsync(RegisterRequest request)
     {
+        DateOfBirthValidator.Validate(request.DateOfBirth, nameof(request.DateOfBirth));
+
         var email = request.Email.Trim().ToLowerInvariant();
 
         if (await _users.ExistsAsync(email))

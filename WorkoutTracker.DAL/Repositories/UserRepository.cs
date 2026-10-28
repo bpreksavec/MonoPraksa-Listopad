@@ -31,6 +31,35 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    public async Task<List<User>> GetAllAsync()
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .Include(u => u.Profile)
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+            .ToListAsync();
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null)
+        {
+            return false;
+        }
+
+        _context.Users.Remove(user);
+
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task<bool> ExistsAsync(string email)
     {
         return await _context.Users

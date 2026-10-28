@@ -6,9 +6,11 @@ namespace WorkoutTracker.Service.DTOs.Profile;
 
 public record ProfileRequest(
     [Required, StringLength(50, MinimumLength = 1)]
+    [RegularExpression(ValidationPatterns.LettersOnly, ErrorMessage = ValidationPatterns.LettersOnlyMessage)]
     string FirstName,
 
     [Required, StringLength(50, MinimumLength = 1)]
+    [RegularExpression(ValidationPatterns.LettersOnly, ErrorMessage = ValidationPatterns.LettersOnlyMessage)]
     string LastName,
 
     DateOnly? DateOfBirth,
