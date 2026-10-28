@@ -1,6 +1,6 @@
 ﻿using WorkoutTracker.Models;
 
-namespace WorkoutTracker.Repositories;
+namespace WorkoutTracker.DAL.Interfaces;
 
 public interface IUserRepository
 {

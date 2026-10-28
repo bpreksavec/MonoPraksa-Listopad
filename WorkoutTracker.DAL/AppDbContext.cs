@@ -104,7 +104,7 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.Role)
                 .HasMaxLength(20)
-                .HasDefaultValue(Roles.User)
+                .HasDefaultValue(Role.User)
                 .HasColumnName("role");
 
             entity.Property(e => e.CreatedAt)

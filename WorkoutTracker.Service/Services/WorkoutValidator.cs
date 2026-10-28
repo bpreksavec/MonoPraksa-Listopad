@@ -1,7 +1,7 @@
 ﻿using WorkoutTracker.Exceptions;
 using WorkoutTracker.Models;
 
-namespace WorkoutTracker.Services;
+namespace WorkoutTracker.Service.Services;
 
 public class WorkoutValidator
 {

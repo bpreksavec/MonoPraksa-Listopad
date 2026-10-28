@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WorkoutTracker.DAL.Interfaces;
 using WorkoutTracker.Data;
 using WorkoutTracker.Models;
 

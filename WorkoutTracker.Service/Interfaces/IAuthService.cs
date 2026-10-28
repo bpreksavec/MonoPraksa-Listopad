@@ -1,6 +1,6 @@
 ﻿using WorkoutTracker.Models;
 
-namespace WorkoutTracker.Services;
+namespace WorkoutTracker.Service.Interfaces;
 
 public interface IAuthService
 {

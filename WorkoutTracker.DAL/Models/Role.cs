@@ -1,6 +1,6 @@
 ﻿namespace WorkoutTracker.Models;
 
-public static class Roles
+public static class Role
 {
     public const string Admin = "Admin";
     public const string User = "User";

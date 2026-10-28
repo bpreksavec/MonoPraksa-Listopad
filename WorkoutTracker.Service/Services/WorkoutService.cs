@@ -1,8 +1,9 @@
-﻿using WorkoutTracker.Exceptions;
+﻿using WorkoutTracker.DAL.Interfaces;
+using WorkoutTracker.Exceptions;
 using WorkoutTracker.Models;
-using WorkoutTracker.Repositories;
+using WorkoutTracker.Service.Interfaces;
 
-namespace WorkoutTracker.Services;
+namespace WorkoutTracker.Service.Services;
 
 public class WorkoutService : IWorkoutService
 {
