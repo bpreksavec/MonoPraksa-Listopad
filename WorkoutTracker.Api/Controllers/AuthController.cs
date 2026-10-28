@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WorkoutTracker.Models;
+using WorkoutTracker.Service.DTOs.Auth;
 using WorkoutTracker.Service.Interfaces;
 
-namespace WorkoutTracker.Controllers;
+namespace WorkoutTracker.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,12 +1,20 @@
-﻿namespace WorkoutTracker.Models;
+using WorkoutTracker.Common.Enums;
+
+namespace WorkoutTracker.DAL.Models;
 
 public class User
 {
     public Guid Id { get; set; }
-    public string Username { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
-    public string Role { get; set; } = Models.Role.User;
+    public DateOnly? DateOfBirth { get; set; }
+    public Gender? Gender { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? LastLoginAt { get; set; }
+
+    public UserProfile? Profile { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public ICollection<BodyMeasurement> BodyMeasurements { get; set; } = new List<BodyMeasurement>();
+    public ICollection<Workout> Workouts { get; set; } = new List<Workout>();
 }

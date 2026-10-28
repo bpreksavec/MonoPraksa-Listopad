@@ -1,4 +1,4 @@
-﻿using WorkoutTracker.Models;
+﻿using WorkoutTracker.DAL.Models;
 
 namespace WorkoutTracker.Service.Interfaces;
 
